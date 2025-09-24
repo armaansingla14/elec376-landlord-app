@@ -1,0 +1,39 @@
+const API = {
+  async login(email, password) {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({email, password})
+    })
+    const j = await res.json().catch(()=>({}))
+    if(!res.ok) throw new Error(j.error || 'Login failed')
+    return j
+  },
+  async signup(name, email, password) {
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({name, email, password})
+    })
+    const j = await res.json().catch(()=>({}))
+    if(!res.ok) throw new Error(j.error || 'Signup failed')
+    return j
+  },
+  async me(token) {
+    const res = await fetch('/api/users/me', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    const j = await res.json().catch(()=>({}))
+    if(!res.ok) throw new Error(j.error || 'Not authorized')
+    return j
+  },
+  async searchLandlords(name) {
+    const u = new URL('/api/landlords/search', window.location.origin)
+    if(name) u.searchParams.set('name', name)
+    const res = await fetch(u.toString())
+    const j = await res.json().catch(()=>({}))
+    if(!res.ok) throw new Error(j.error || 'Search failed')
+    return j.results || []
+  }
+}
+export default API
