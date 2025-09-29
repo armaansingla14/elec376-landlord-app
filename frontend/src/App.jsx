@@ -582,7 +582,7 @@ export default function App(){
 
       {showLogin && (
         <div style={{position:'fixed', inset:0, background:'rgba(0,0,0,0.4)', backdropFilter: 'blur(8px)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px'}} onClick={()=>setShowLogin(false)}>
-          <div style={{background:'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255, 255, 255, 0.3)', padding:32, maxWidth:420, width: '100%', borderRadius: 20, boxShadow: '0 20px 40px rgba(0,0,0,0.15)'}} onClick={e=>e.stopPropagation()}>
+          <div style={{background:'rgba(255, 255, 255, 0.15)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255, 255, 255, 0.3)', padding:32, maxWidth:420, width: '100%', borderRadius: 20, boxShadow: '0 8px 32px rgba(0,0,0,0.1)'}} onClick={e=>e.stopPropagation()}>
             <Login onLogin={({token})=>{ localStorage.setItem('token', token); setToken(token); setShowLogin(false) }} />
           </div>
         </div>
@@ -590,7 +590,7 @@ export default function App(){
 
       {showSignup && (
         <div style={{position:'fixed', inset:0, background:'rgba(0,0,0,0.4)', backdropFilter: 'blur(8px)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px'}} onClick={()=>setShowSignup(false)}>
-          <div style={{background:'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255, 255, 255, 0.3)', padding:32, maxWidth:420, width: '100%', borderRadius: 20, boxShadow: '0 20px 40px rgba(0,0,0,0.15)'}} onClick={e=>e.stopPropagation()}>
+          <div style={{background:'rgba(255, 255, 255, 0.15)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255, 255, 255, 0.3)', padding:32, maxWidth:420, width: '100%', borderRadius: 20, boxShadow: '0 8px 32px rgba(0,0,0,0.1)'}} onClick={e=>e.stopPropagation()}>
             <Signup onSignup={({token})=>{ localStorage.setItem('token', token); setToken(token); setShowSignup(false) }} />
           </div>
         </div>

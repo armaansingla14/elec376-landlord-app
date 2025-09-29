@@ -37,7 +37,7 @@ export default function Signup({onSignup}){
   const titleStyle = {
     fontSize: '20px', 
     fontWeight: '700', 
-    color: '#1f2937',
+    color: '#ffffff',
     textShadow: '0 1px 2px rgba(0, 0, 0, 0.1)'
   }
 
@@ -49,20 +49,23 @@ export default function Signup({onSignup}){
   const labelStyle = {
     fontSize: '14px',
     fontWeight: '500',
-    color: '#374151',
-    marginBottom: '4px'
+    color: 'rgba(255, 255, 255, 0.9)',
+    marginBottom: '4px',
+    textShadow: '0 1px 2px rgba(0, 0, 0, 0.1)'
   }
 
   const inputStyle = {
     width: '100%',
     padding: '12px 16px',
     fontSize: '16px',
-    border: '1px solid rgba(229, 231, 235, 0.8)',
+    border: '1px solid rgba(255, 255, 255, 0.3)',
     borderRadius: '8px',
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    backdropFilter: 'blur(10px)',
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    backdropFilter: 'blur(20px)',
     outline: 'none',
-    transition: 'all 0.2s ease'
+    transition: 'all 0.3s ease',
+    color: '#ffffff',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
   }
 
   const buttonStyle = {
@@ -72,12 +75,13 @@ export default function Signup({onSignup}){
     fontWeight: '600',
     color: '#ffffff',
     backgroundColor: 'rgba(59, 130, 246, 0.8)',
-    border: '1px solid rgba(255, 255, 255, 0.2)',
+    border: '1px solid rgba(255, 255, 255, 0.3)',
     borderRadius: '8px',
     cursor: 'pointer',
-    backdropFilter: 'blur(10px)',
-    transition: 'all 0.2s ease',
-    marginTop: '8px'
+    backdropFilter: 'blur(20px)',
+    transition: 'all 0.3s ease',
+    marginTop: '8px',
+    boxShadow: '0 8px 32px rgba(59, 130, 246, 0.2)'
   }
 
   const errorStyle = {
@@ -92,7 +96,13 @@ export default function Signup({onSignup}){
   }
 
   return (
-    <form onSubmit={submit} style={formStyle}>
+    <>
+      <style>{`
+        input::placeholder {
+          color: rgba(255, 255, 255, 0.7) !important;
+        }
+      `}</style>
+      <form onSubmit={submit} style={formStyle}>
       <div style={headerStyle}>
         <img src="/new-logo.png" alt="RateMyLandlord" style={{width: '32px', height: '32px'}} />
         <span style={titleStyle}>RateMyLandlord</span>
@@ -133,6 +143,7 @@ export default function Signup({onSignup}){
         <button disabled={busy} style={buttonStyle}>{busy ? 'Creating…' : 'Create account'}</button>
         {err && <div style={errorStyle}>{err}</div>}
       </div>
-    </form>
+      </form>
+    </>
   )
 }
