@@ -3,6 +3,7 @@ import { Routes, Route, Link } from 'react-router-dom'
 import Login from './Login'
 import Signup from './Signup'
 import Landlords from './Landlords'
+import Review from './Review'
 import API from './api'
 
 function Navbar({user, onLoginClick, onSignupClick, onLogout}){
@@ -349,7 +350,7 @@ function HeroSection({stats}){
       </p>
       
       
-       <div style={{textAlign: 'center', marginTop: '16px'}}>
+       <div style={{textAlign: 'center', marginTop: '16px', display: 'flex', gap: '16px', justifyContent: 'center'}}>
          <Link 
            to="/landlords"
            style={{
@@ -377,6 +378,34 @@ function HeroSection({stats}){
            }}
          >
            View All Landlords
+         </Link>
+         <Link 
+           to="/review"
+           style={{
+             ...ctaButtonStyle,
+             backgroundColor: 'rgba(255, 255, 255, 0.2)',
+             color: '#ffffff',
+             border: '1px solid rgba(255, 255, 255, 0.3)',
+             textDecoration: 'none',
+             display: 'inline-block'
+           }}
+           onMouseEnter={(e) => {
+             Object.assign(e.target.style, {
+               ...ctaButtonHoverStyle,
+               backgroundColor: 'rgba(255, 255, 255, 0.3)'
+             })
+           }}
+           onMouseLeave={(e) => {
+             Object.assign(e.target.style, {
+               ...ctaButtonStyle,
+               backgroundColor: 'rgba(255, 255, 255, 0.2)',
+               color: '#ffffff',
+               border: '1px solid rgba(255, 255, 255, 0.3)',
+               textDecoration: 'none'
+             })
+           }}
+         >
+           Write a Review
          </Link>
        </div>
        
@@ -577,6 +606,17 @@ export default function App(){
             onSignupClick={()=>{ setShowSignup(true); setShowLogin(false) }}
             onLogout={()=>{ localStorage.removeItem('token'); setToken(null) }}
           />
+        } />
+        <Route path="/review" element={
+          <>
+            <Navbar
+              user={user}
+              onLoginClick={()=>{ setShowLogin(true); setShowSignup(false) }}
+              onSignupClick={()=>{ setShowSignup(true); setShowLogin(false) }}
+              onLogout={()=>{ localStorage.removeItem('token'); setToken(null) }}
+            />
+            <Review />
+          </>
         } />
       </Routes>
 
