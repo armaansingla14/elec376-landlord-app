@@ -1,8 +1,13 @@
 [
 	{
-		"email" : "lukarod72@gmail.com",
+		"email" : "22xbr4@queensu.ca",
+		"name" : "Sebastian Pereira ",
+		"password" : "hello123"
+	},
+	{
+		"email" : "luka@example.com",
 		"name" : "Luka",
-		"password" : "Luka1234"
+		"password" : "secret"
 	},
 	{
 		"email" : "demo@rml.dev",
@@ -10,8 +15,8 @@
 		"password" : "password"
 	},
 	{
-		"email" : "luka@example.com",
+		"email" : "lukarod72@gmail.com",
 		"name" : "Luka",
-		"password" : "secret"
+		"password" : "Luka1234"
 	}
 ]
