@@ -1,23 +1,13 @@
 [
 	{
-		"email" : "jacob.huynh@queensu.ca",
-		"name" : "Jacob",
-		"password" : "22mg77"
+		"email" : "sindusaram@gmail.com",
+		"name" : "Sindu",
+		"password" : "password123"
 	},
 	{
-		"email" : "20lfr@queensu.ca",
-		"name" : "Luka",
+		"email" : "lukarod72@gmail.com",
+		"name" : "Luka Rodrigues",
 		"password" : "Luka1234"
-	},
-	{
-		"email" : "demo@rml.dev",
-		"name" : "Demo RML",
-		"password" : "password"
-	},
-	{
-		"email" : "luka@example.com",
-		"name" : "Luka",
-		"password" : "secret"
 	},
 	{
 		"email" : "22xbr4@queensu.ca",
@@ -25,8 +15,23 @@
 		"password" : "hello123"
 	},
 	{
-		"email" : "lukarod72@gmail.com",
-		"name" : "Luka Rodrigues",
+		"email" : "luka@example.com",
+		"name" : "Luka",
+		"password" : "secret"
+	},
+	{
+		"email" : "demo@rml.dev",
+		"name" : "Demo RML",
+		"password" : "password"
+	},
+	{
+		"email" : "20lfr@queensu.ca",
+		"name" : "Luka",
 		"password" : "Luka1234"
+	},
+	{
+		"email" : "jacob.huynh@queensu.ca",
+		"name" : "Jacob",
+		"password" : "22mg77"
 	}
 ]
