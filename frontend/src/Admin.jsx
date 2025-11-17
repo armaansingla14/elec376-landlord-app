@@ -2,19 +2,14 @@ import React from 'react'
 
 const defaultTools = [
   {
-    title: 'Moderate Landlord Listings',
-    description: 'Review newly submitted landlords and approve or reject changes before they appear in search results.',
-    cta: 'Open moderation queue'
+    title: 'Landlord Request Inbox',
+    description: 'Review the queue of new landlord submissions that need an approval or follow-up.',
+    cta: 'Open landlord requests'
   },
   {
-    title: 'Monitor Reviews',
-    description: 'Quickly scan recent reviews that were flagged by the community and resolve any disputes.',
-    cta: 'View flagged reviews'
-  },
-  {
-    title: 'System Insights',
-    description: 'Check platform health, landlord stats, and user growth metrics at a glance.',
-    cta: 'View dashboard'
+    title: 'Reported Reviews Inbox',
+    description: 'See reviews that have been reported by tenants or landlords and decide what action is needed.',
+    cta: 'Open reported reviews'
   }
 ]
 
