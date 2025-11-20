@@ -91,11 +91,13 @@ int main() {
   const std::string usersPath = resolveDataPath("data/users.json");
   const std::string landlordsPath = resolveDataPath("data/landlords.json");
   const std::string reviewsPath = resolveDataPath("data/reviews.json");
+  const std::string landlordRequestsPath = (std::filesystem::path(landlordsPath).parent_path() / "landlord_requests.json").string();
+
 
   // Controllers
   auto auth = std::make_shared<AuthCtrl>(usersPath);
   auto user = std::make_shared<UserCtrl>(usersPath);
-  auto landlord = std::make_shared<LandlordCtrl>(landlordsPath);
+  auto landlord = std::make_shared<LandlordCtrl>(landlordsPath, landlordRequestsPath);
   auto review = std::make_shared<ReviewCtrl>();
   review->setDbPath(reviewsPath);
 
@@ -133,6 +135,14 @@ int main() {
         auth->verifyCode(req, std::move(cb));
       },
       {drogon::Post});
+
+  drogon::app().registerHandler(
+    "/api/landlords/request",
+    [landlord](const drogon::HttpRequestPtr& req,
+               std::function<void(const drogon::HttpResponsePtr&)>&& cb) {
+      landlord->submitRequest(req, std::move(cb));
+    },
+    {drogon::Post});
 
   // -----------------------------
   // Users

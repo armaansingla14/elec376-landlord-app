@@ -4,6 +4,7 @@
 #include <map>
 #include <vector>
 #include <cmath>
+#include <ctime> 
 
 static std::string lower(std::string s){
     std::transform(s.begin(), s.end(), s.begin(),
@@ -196,6 +197,93 @@ void LandlordCtrl::leaderboard(const drogon::HttpRequestPtr &req,
     Json::Value body(Json::objectValue);
     body["leaderboard"] = sortedResults;
     
+    auto resp = drogon::HttpResponse::newHttpJsonResponse(body);
+    cb(resp);
+}
+
+void LandlordCtrl::submitRequest(const drogon::HttpRequestPtr &req,
+                            std::function<void (const drogon::HttpResponsePtr &)> &&cb)
+{
+        auto json = req->getJsonObject();
+    if (!json) {
+        auto resp = drogon::HttpResponse::newHttpJsonResponse(Json::Value(Json::objectValue));
+        resp->setStatusCode(drogon::k400BadRequest);
+        (*resp->getJsonObject())["error"] = "Request body must be JSON";
+        cb(resp);
+        return;
+    }
+
+    std::string landlordName   = (*json)["landlord_name"].asString();
+    std::string requesterName  = (*json)["user_name"].asString();
+    std::string requesterEmail = (*json)["user_email"].asString();
+    std::string propertyInfo   = (*json)["property_address"].asString();
+    std::string details        = (*json)["details"].asString();
+
+    if (landlordName.empty() || requesterEmail.empty()) {
+        auto resp = drogon::HttpResponse::newHttpJsonResponse(Json::Value(Json::objectValue));
+        resp->setStatusCode(drogon::k400BadRequest);
+        (*resp->getJsonObject())["error"] =
+            "landlord_name and user_email are required";
+        cb(resp);
+        return;
+    }
+
+    Json::Value db;
+    {
+        std::lock_guard<std::mutex> lk(mu_);
+
+        // Load existing requests file if present
+        std::ifstream f(requestDbPath_);
+        if (f.good()) {
+            f >> db;
+        } else {
+            db["requests"] = Json::Value(Json::arrayValue);
+        }
+
+        if (!db.isMember("requests") || !db["requests"].isArray()) {
+            db["requests"] = Json::Value(Json::arrayValue);
+        }
+
+        // Compute next id
+        int nextId = 1;
+        for (const auto &reqItem : db["requests"]) {
+            if (reqItem.isMember("id")) {
+                nextId = std::max(nextId, reqItem["id"].asInt() + 1);
+            }
+        }
+
+        // Timestamp
+        std::time_t now = std::time(nullptr);
+        char buf[64];
+        std::strftime(buf, sizeof(buf), "%Y-%m-%dT%H:%M:%SZ", std::gmtime(&now));
+
+        Json::Value newReq(Json::objectValue);
+        newReq["id"] = nextId;
+        newReq["landlord_name"] = landlordName;
+        newReq["user_name"] = requesterName;
+        newReq["user_email"] = requesterEmail;
+        newReq["property_address"] = propertyInfo;
+        newReq["details"] = details;
+        newReq["created_at"] = buf;
+        newReq["status"] = "pending";
+
+        db["requests"].append(newReq);
+
+        // Save back to file
+        std::ofstream out(requestDbPath_);
+        if (!out.good()) {
+            auto resp = drogon::HttpResponse::newHttpJsonResponse(Json::Value(Json::objectValue));
+            resp->setStatusCode(drogon::k500InternalServerError);
+            (*resp->getJsonObject())["error"] = "Failed to write landlord_requests database";
+            cb(resp);
+            return;
+        }
+        out << db;
+    }
+
+    Json::Value body(Json::objectValue);
+    body["ok"] = true;
+    body["message"] = "Landlord request submitted";
     auto resp = drogon::HttpResponse::newHttpJsonResponse(body);
     cb(resp);
 }
