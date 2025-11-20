@@ -9,6 +9,7 @@
 #include "controllers/LandlordCtrl.h"
 #include "controllers/ReviewCtrl.h"
 #include "controllers/UserCtrl.h"
+#include "controllers/AdminCtrl.h"
 
 static std::string resolveDataPath(const std::string& relative) {
   namespace fs = std::filesystem;
@@ -91,6 +92,7 @@ int main() {
   const std::string usersPath = resolveDataPath("data/users.json");
   const std::string landlordsPath = resolveDataPath("data/landlords.json");
   const std::string reviewsPath = resolveDataPath("data/reviews.json");
+  const std::string reportedPath = resolveDataPath("data/reported.json");
 
   // Controllers
   auto auth = std::make_shared<AuthCtrl>(usersPath);
@@ -98,6 +100,7 @@ int main() {
   auto landlord = std::make_shared<LandlordCtrl>(landlordsPath);
   auto review = std::make_shared<ReviewCtrl>();
   review->setDbPath(reviewsPath);
+  auto admin = std::make_shared<AdminCtrl>(reportedPath, usersPath);
 
   // -----------------------------
   // Authentication routes
@@ -191,6 +194,35 @@ int main() {
         review->getForLandlord(req, std::move(cb), id);
       },
       {drogon::Get});
+
+  // -----------------------------
+  // Admin: reported reviews
+  // -----------------------------
+  drogon::app().registerHandler(
+      "/api/admin/reported",
+      [admin](const drogon::HttpRequestPtr& req,
+              std::function<void(const drogon::HttpResponsePtr&)>&& cb) {
+        admin->getReported(req, std::move(cb));
+      },
+      {drogon::Get});
+
+  drogon::app().registerHandler(
+      "/api/admin/reported/{id}/approve",
+      [admin](const drogon::HttpRequestPtr& req,
+              std::function<void(const drogon::HttpResponsePtr&)>&& cb,
+              const std::string& id) {
+        admin->approve(req, std::move(cb), id);
+      },
+      {drogon::Post});
+
+  drogon::app().registerHandler(
+      "/api/admin/reported/{id}/deny",
+      [admin](const drogon::HttpRequestPtr& req,
+              std::function<void(const drogon::HttpResponsePtr&)>&& cb,
+              const std::string& id) {
+        admin->deny(req, std::move(cb), id);
+      },
+      {drogon::Post});
 
   // -----------------------------
   // Run server

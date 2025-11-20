@@ -6,6 +6,7 @@ import Landlords from './Landlords'
 import Review from './Review'
 import Leaderboard from './Leaderboard'
 import Admin from './Admin'
+import ReportedInbox from './ReportedInbox'
 import API from './api'
 
 function Navbar({user, onLoginClick, onSignupClick, onLogout}){
@@ -692,6 +693,23 @@ export default function App(){
                 onLogout={handleLogout}
               />
               <Admin user={user} />
+            </>
+          ) : (
+            <Navigate to="/" replace />
+          )
+        } />
+        <Route path="/admin/reported" element={
+          userLoading ? (
+            <div style={loadingScreenStyle}>Checking permissions…</div>
+          ) : user?.admin ? (
+            <>
+              <Navbar
+                user={user}
+                onLoginClick={()=>{ setShowLogin(true); setShowSignup(false) }}
+                onSignupClick={()=>{ setShowSignup(true); setShowLogin(false) }}
+                onLogout={handleLogout}
+              />
+              <ReportedInbox user={user} />
             </>
           ) : (
             <Navigate to="/" replace />
