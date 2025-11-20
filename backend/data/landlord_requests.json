@@ -1,0 +1,15 @@
+{
+	"requests" : 
+	[
+		{
+			"created_at" : "2025-11-20T18:02:52Z",
+			"details" : "Evicts many tenants lately.",
+			"id" : 1,
+			"landlord_name" : "Donald J Trump",
+			"property_address" : "White House Street",
+			"status" : "pending",
+			"user_email" : "jacob.huynh@queensu.ca",
+			"user_name" : "Jacob"
+		}
+	]
+}

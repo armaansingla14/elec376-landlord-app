@@ -537,6 +537,195 @@ function SearchResults({ err, loading, list }) {
   )
 }
 
+function LandlordRequestSection({ user, currentQuery }) {
+  const [landlordName, setLandlordName] = React.useState(currentQuery || '')
+  const [userName, setUserName] = React.useState(user?.name || '')
+  const [userEmail, setUserEmail] = React.useState(user?.email || '')
+  const [propertyAddress, setPropertyAddress] = React.useState('')
+  const [details, setDetails] = React.useState('')
+  const [submitting, setSubmitting] = React.useState(false)
+  const [successMsg, setSuccessMsg] = React.useState('')
+  const [errorMsg, setErrorMsg] = React.useState('')
+
+  // Keep landlord name synced with current search query
+  React.useEffect(() => {
+    setLandlordName(currentQuery || '')
+  }, [currentQuery])
+
+  // Update name/email when user logs in/out
+  React.useEffect(() => {
+    setUserName(user?.name || '')
+    setUserEmail(user?.email || '')
+  }, [user])
+
+  const cardStyle = {
+    maxWidth: '800px',
+    margin: '0 auto 60px',
+    padding: '24px',
+    borderRadius: '16px',
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    backdropFilter: 'blur(20px)',
+    border: '1px solid rgba(255, 255, 255, 0.3)',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+    color: '#ffffff'
+  }
+
+  const titleStyle = {
+    fontSize: '20px',
+    fontWeight: '700',
+    marginBottom: '8px'
+  }
+
+  const subtitleStyle = {
+    fontSize: '14px',
+    opacity: 0.9,
+    marginBottom: '16px'
+  }
+
+  const formRowStyle = {
+    display: 'flex',
+    gap: '12px',
+    marginBottom: '12px',
+    flexWrap: 'wrap'
+  }
+
+  const inputStyle = {
+    flex: 1,
+    minWidth: '220px',
+    padding: '10px 12px',
+    borderRadius: '10px',
+    border: '1px solid rgba(255, 255, 255, 0.4)',
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    color: '#ffffff',
+    outline: 'none'
+  }
+
+  const textareaStyle = {
+    ...inputStyle,
+    minHeight: '80px',
+    resize: 'vertical'
+  }
+
+  const buttonStyle = {
+    padding: '10px 20px',
+    borderRadius: '999px',
+    border: 'none',
+    fontWeight: '600',
+    cursor: 'pointer',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    color: '#2563eb',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
+  }
+
+  const errorStyle = {
+    color: '#fee2e2',
+    backgroundColor: 'rgba(220, 38, 38, 0.25)',
+    border: '1px solid rgba(248, 113, 113, 0.8)',
+    borderRadius: '8px',
+    padding: '8px 10px',
+    marginTop: '8px',
+    fontSize: '13px'
+  }
+
+  const successStyle = {
+    color: '#bbf7d0',
+    backgroundColor: 'rgba(22, 163, 74, 0.25)',
+    border: '1px solid rgba(74, 222, 128, 0.8)',
+    borderRadius: '8px',
+    padding: '8px 10px',
+    marginTop: '8px',
+    fontSize: '13px'
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setErrorMsg('')
+    setSuccessMsg('')
+
+    if (!landlordName.trim()) {
+      setErrorMsg('Please enter the landlord name.')
+      return
+    }
+    if (!userEmail.trim()) {
+      setErrorMsg('Please enter your email so the admin can contact you.')
+      return
+    }
+
+    setSubmitting(true)
+    try {
+      await API.submitLandlordRequest({
+        landlord_name: landlordName.trim(),
+        user_name: userName.trim(),
+        user_email: userEmail.trim(),
+        property_address: propertyAddress.trim(),
+        details: details.trim()
+      })
+      setSuccessMsg('Your request has been submitted. Thank you!')
+      setDetails('')
+      setPropertyAddress('')
+    } catch (err) {
+      setErrorMsg(err.message || 'Failed to submit request')
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  return (
+    <div style={cardStyle}>
+      <div style={titleStyle}>Can’t find your landlord?</div>
+      <div style={subtitleStyle}>
+        Submit a request and an admin will review it and add the landlord to the system.
+      </div>
+      <form onSubmit={handleSubmit}>
+        <div style={formRowStyle}>
+          <input
+            style={inputStyle}
+            placeholder="Landlord name"
+            value={landlordName}
+            onChange={e => setLandlordName(e.target.value)}
+          />
+        </div>
+        <div style={formRowStyle}>
+          <input
+            style={inputStyle}
+            placeholder="Your name (optional)"
+            value={userName}
+            onChange={e => setUserName(e.target.value)}
+          />
+          <input
+            style={inputStyle}
+            placeholder="Your email"
+            value={userEmail}
+            onChange={e => setUserEmail(e.target.value)}
+          />
+        </div>
+        <div style={formRowStyle}>
+          <input
+            style={inputStyle}
+            placeholder="Property address (optional)"
+            value={propertyAddress}
+            onChange={e => setPropertyAddress(e.target.value)}
+          />
+        </div>
+        <div style={formRowStyle}>
+          <textarea
+            style={textareaStyle}
+            placeholder="Any extra details you’d like the admin to know (optional)…"
+            value={details}
+            onChange={e => setDetails(e.target.value)}
+          />
+        </div>
+        <button type="submit" style={buttonStyle} disabled={submitting}>
+          {submitting ? 'Sending…' : 'Submit landlord request'}
+        </button>
+        {errorMsg && <div style={errorStyle}>{errorMsg}</div>}
+        {successMsg && <div style={successStyle}>{successMsg}</div>}
+      </form>
+    </div>
+  )
+}
+
+
 export default function Landlords({ user, onLoginClick, onSignupClick, onLogout }) {
   const [q, setQ] = React.useState('')
   const [list, setList] = React.useState([])
@@ -672,6 +861,7 @@ export default function Landlords({ user, onLoginClick, onSignupClick, onLogout 
         </div>
 
         <SearchResults err={err} loading={loading} list={list} />
+        <LandlordRequestSection user={user} currentQuery={q} />
       </div>
     </>
   )
