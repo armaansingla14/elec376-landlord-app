@@ -15,6 +15,7 @@ endif()
 add_executable(rml_backend
   src/main.cpp
   src/controllers/AuthCtrl.cpp
+  src/controllers/AdminCtrl.cpp
   src/controllers/UserCtrl.cpp
   src/controllers/LandlordCtrl.cpp
   src/controllers/ReviewCtrl.cpp

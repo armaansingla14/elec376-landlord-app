@@ -6,6 +6,8 @@ import Landlords from './Landlords'
 import Review from './Review'
 import Leaderboard from './Leaderboard'
 import Admin from './Admin'
+import ReportReview from './ReportReview'
+import ReportedInbox from './ReportedInbox'
 import API from './api'
 import LandlordRequests from './LandlordRequests'
 
@@ -673,6 +675,17 @@ export default function App(){
             <Review />
           </>
         } />
+        <Route path="/report" element={
+          <>
+            <Navbar
+              user={user}
+              onLoginClick={()=>{ setShowLogin(true); setShowSignup(false) }}
+              onSignupClick={()=>{ setShowSignup(true); setShowLogin(false) }}
+              onLogout={handleLogout}
+            />
+            <ReportReview user={user} />
+          </>
+        } />
         <Route path="/leaderboard" element={
           <Leaderboard
             user={user}
@@ -698,7 +711,7 @@ export default function App(){
             <Navigate to="/" replace />
           )
         } />
-        <Route path="/admin/requests" element={
+        <Route path="/admin/reported" element={
           userLoading ? (
             <div style={loadingScreenStyle}>Checking permissions…</div>
           ) : user?.admin ? (
@@ -709,7 +722,7 @@ export default function App(){
                 onSignupClick={()=>{ setShowSignup(true); setShowLogin(false) }}
                 onLogout={handleLogout}
               />
-              <LandlordRequests user={user} />
+              <ReportedInbox user={user} />
             </>
           ) : (
             <Navigate to="/" replace />

@@ -1,6 +1,5 @@
 import React from 'react'
-import API from './api'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const defaultTools = [
   {
@@ -16,6 +15,7 @@ const defaultTools = [
 ]
 
 export default function Admin({ user }) {
+  const navigate = useNavigate()
   const pageStyle = {
     minHeight: '100vh',
     background: 'linear-gradient(135deg, rgba(96, 165, 250, 0.8) 0%, rgba(59, 130, 246, 0.8) 100%)',
@@ -108,18 +108,16 @@ export default function Admin({ user }) {
             <div key={tool.title} style={cardStyle}>
               <div style={cardTitleStyle}>{tool.title}</div>
               <div style={cardDescriptionStyle}>{tool.description}</div>
-
-              {tool.title === 'Landlord Request Inbox' ? (
-                <Link to="/admin/requests">
-                  <button style={buttonStyle} type="button">
-                    {tool.cta}
-                  </button>
-                </Link>
-              ) : (
-                <button style={buttonStyle} type="button">
-                  {tool.cta}
-                </button>
-              )}
+              <button
+                style={buttonStyle}
+                type="button"
+                onClick={() => {
+                  // Navigate to the reported inbox and mark that we came from Admin
+                  navigate('/admin/reported', { state: { fromAdmin: true } })
+                }}
+              >
+                {tool.cta}
+              </button>
             </div>
           ))}
         </div>
