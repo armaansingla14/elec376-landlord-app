@@ -74,9 +74,9 @@ Backend runs on port 5000.
 • Modular backend architecture  
 
 ## Screenshots  
-(Insert images here if available)  
-Example:  
-![Homepage Screenshot](ratemylandlord.jpg)
+ 
+![ratemylandlord](https://github.com/user-attachments/assets/2703c412-808b-46cc-92a8-5b492984c75f)
+
 
 ## Future Improvements  
 • Deploy to a cloud provider  
@@ -88,4 +88,5 @@ Example:
 ## Academic Note  
 This project was created for ELEC 376 at Queen’s University.  
 All contributions listed under my commits represent my personal work on the project.
+
 
