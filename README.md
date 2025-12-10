@@ -76,7 +76,7 @@ Backend runs on port 5000.
 ## Screenshots  
 (Insert images here if available)  
 Example:  
-![Homepage Screenshot](hero-image.jpg)
+![Homepage Screenshot](ratemylandlord.jpg)
 
 ## Future Improvements  
 • Deploy to a cloud provider  
@@ -88,3 +88,4 @@ Example:
 ## Academic Note  
 This project was created for ELEC 376 at Queen’s University.  
 All contributions listed under my commits represent my personal work on the project.
+
